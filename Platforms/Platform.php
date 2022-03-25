@@ -33,18 +33,10 @@ abstract class Platform
         return $platformConfig;
     }
 
-    static public function GetPlattformFromName(string $platformName): ?Platform
+    static public function GetPlatformObject(string $platformName): ?self
     {
-        $platformClassname = $platformName . 'Platform';
-        $platform = null;
-
-        try {
-            $platform = new $platformClassname;
-        } catch (Exception $e) {
-            Logger::Error($e);
-        }
-
-        return $platform;
+        $platformClassname = ucfirst($platformName) . 'Platform';
+        return ClassUtils::GetClassByName($platformClassname);
     }
 
     private function GetResponseList(): array
@@ -109,6 +101,7 @@ abstract class Platform
             $conn->close();
             return $result;
         } catch (Exception $e) {
+            Logger::Error($e);
             return false;
         }
     }
