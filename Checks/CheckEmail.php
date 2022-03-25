@@ -10,7 +10,7 @@ class CheckEmail implements CheckInterface
 
         $subject = "Control-Center PHP Mailtest";
         $txt = date("Y-m-d H:i");
-        $headers = "From: monitoring@" . Utils::GetDomain();
+        $headers = "From: heartbeat@" . Utils::GetDomain();
 
         $out = mail($email, $subject, $txt, $headers);
 

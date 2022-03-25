@@ -1,9 +1,9 @@
 <?php
 
 
-$monitor = new Monitor;
-$monitor->StartChecks($_POST);
+$Heartbeat = new Heartbeat;
+$Heartbeat->StartChecks($_POST);
 
-$response = $monitor->JSONResponse();
+$response = $Heartbeat->JSONResponse();
 
 echo $response;

@@ -1,6 +1,6 @@
 <?php
 
-class Monitor
+class Heartbeat
 {
     private array $_result = [];
     private array $_info = [];
