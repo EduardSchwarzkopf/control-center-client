@@ -1,6 +1,5 @@
 <?php
-define('__ROOT__', dirname(__FILE__, 2));
-include(__ROOT__ . '/Autoloader.php');
+include(dirname(__FILE__, 2) . '/Autoloader.php');
 
 $token = JWT::getBearerToken();
 
