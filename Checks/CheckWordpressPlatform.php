@@ -1,6 +1,6 @@
 <?php
 
-class CheckWordpressPlatform extends CheckPlatformBase
+class CheckWordpressPlatform extends CheckPlatform
 {
     static public function Run(Platform $platform): bool
     {

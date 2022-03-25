@@ -1,6 +1,6 @@
 <?php
 
-abstract class CheckPlatformBase implements CheckPlatformInterface
+abstract class CheckPlatform implements CheckPlatformInterface
 {
     protected string $db_server_info = '';
 

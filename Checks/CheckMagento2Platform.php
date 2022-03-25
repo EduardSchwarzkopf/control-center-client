@@ -1,6 +1,6 @@
 <?php
 
-class CheckMagento2Platform extends CheckPlatformBase
+class CheckMagento2Platform extends CheckPlatform
 {
     static public function Run(Platform $platform): bool
     {
