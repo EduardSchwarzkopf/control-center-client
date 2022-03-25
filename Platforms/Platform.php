@@ -33,13 +33,27 @@ abstract class Platform
         return $platformConfig;
     }
 
+    static public function GetPlattformFromName(string $platformName): ?Platform
+    {
+        $platformClassname = $platformName . 'Platform';
+        $platform = null;
+
+        try {
+            $platform = new $platformClassname;
+        } catch (Exception $e) {
+            Logger::Error($e);
+        }
+
+        return $platform;
+    }
+
     private function GetResponseList(): array
     {
         return [
-            'result'=>false,
-            'bytes'=>0,
-            'path'=>null,
-            'size'=>0,
+            'result' => false,
+            'bytes' => 0,
+            'path' => null,
+            'size' => 0,
         ];
     }
 
@@ -139,7 +153,8 @@ abstract class Platform
         return $responseList;
     }
 
-    protected function GetRelativeFilePath($filePath) {
+    protected function GetRelativeFilePath($filePath)
+    {
         $rootPath = dirname(__DIR__, 3) . '/';
         return str_replace($rootPath, '', $filePath);
     }
