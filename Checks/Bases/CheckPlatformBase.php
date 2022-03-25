@@ -2,7 +2,7 @@
 
 abstract class CheckPlatformBase implements CheckPlatformInterface
 {
-    public string $db_server_info = '';
+    protected string $db_server_info = '';
 
     static public function Run(Platform $platform): bool
     {
@@ -10,5 +10,11 @@ abstract class CheckPlatformBase implements CheckPlatformInterface
         $dbCeck = $platform->CheckDatabaseConnection();
 
         return $dbCeck;
+    }
+
+    static public function GetCheckPlatformObject(string $platformName): ?self
+    {
+        $classname = 'Check' . ucfirst($platformName) . 'Platform';
+        return ClassUtils::GetClassByName($classname);
     }
 }
