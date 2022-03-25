@@ -2,8 +2,8 @@
 
 class Logger
 {
-    private $dir = './logs/';
-    private $maxFiles = 7;
+    static private $DIR = './logs/';
+    static private $MAX_FILES = 7;
 
     static public function Error(Exception $error): void
     {
@@ -14,16 +14,40 @@ class Logger
         $line = $error->getLine();
         $file = $error->getFile();
 
-        $content = "ERROR: $message in $file on line $line";
+        $line = "ERROR: $message in $file on line $line";
 
         $logger = new self;
-        $logger->WriteLog($content, $file);
+        $logger->WriteLog($line, $file);
     }
 
-
-    private function WriteLog(string $content, string $file): bool
+    static public function Info($content): void
     {
-        $dir = $this->dir;
+
+        $file = 'info.log';
+        $line = 'INFO: ' . $content;
+
+        self::WriteLog($line, $file);
+    }
+
+    static public function Warning($content): void
+    {
+        $file = 'warning.log';
+        $line = 'WARNING: ' . $content;
+
+        self::WriteLog($line, $file);
+    }
+
+    static public function Success(string $content): void
+    {
+        $file = 'info.log';
+        $line = 'SUCCESS: ' . $content;
+
+        self::WriteLog($line, $file);
+    }
+
+    static private function WriteLog(string $content, string $file): bool
+    {
+        $dir = self::$DIR;
         if (!is_dir($dir)) mkdir($dir);
 
         $now = date("Y-m-d H:i");
@@ -31,14 +55,15 @@ class Logger
 
         $result = file_put_contents("$dir/$file", $line, FILE_APPEND);
 
-        $this->RotateLog();
+        self::RotateLog();
 
         return $result;
     }
 
-    private function RotateLog(): void
+
+    static private function RotateLog(): void
     {
-        $sqlFiles = glob($this->dir . "*.{log}", GLOB_BRACE);
-        FileUtils::CleanupFiles($sqlFiles, $this->maxFiles);
+        $sqlFiles = glob(self::$DIR . "*.{log}", GLOB_BRACE);
+        FileUtils::CleanupFiles($sqlFiles, self::$MAX_FILES);
     }
 }
