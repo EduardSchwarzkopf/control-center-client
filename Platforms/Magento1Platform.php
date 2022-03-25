@@ -9,11 +9,11 @@ class Magento1Platform extends Platform
         $configFilePath = '/app/etc/local.xml';
         parent::__construct($configFilePath);
 
-        $config = $this->_platformConfig->global->resources->default_setup->connection;
+        $config = $this->platformConfig->global->resources->default_setup->connection;
 
-        $this->_host = $config->host;
-        $this->_database = $config->dbname;
-        $this->_username = $config->username;
-        $this->_password = $config->password;
+        $this->host = $config->host;
+        $this->database = $config->dbname;
+        $this->username = $config->username;
+        $this->password = $config->password;
     }
 }
