@@ -15,7 +15,7 @@ class Monitor
         //     'backup_database' => 24,
         //     'backup_files' => 24,
         //     'email' => 'my@email.com',
-        //     'wordpress' => true,
+        //     'platform' => 'wordpress',
         // ];
 
         foreach ($checkList as $checkItem => $value) {
@@ -59,28 +59,23 @@ class Monitor
                     $result = CheckEmail::Run($value);
                     break;
 
-                case 'wordpress':
-                case 'magento1':
-                case 'magento2':
+                case 'platform':
 
-                    $platformName = ucfirst($checkItem) . 'Platform';
 
-                    try {
-                        $platform = new $platformName;
-                    } catch (Exception $e) {
-                        $message = $e->getMessage();
-                        $line = $e->getLine();
-                        $file = $e->getFile();
+                    $platform = Platform::GetPlatformObject($value);
+                    $platformCheck = CheckPlatform::GetCheckPlatformObject($value);
 
-                        $this->_error[$platformName] = "PLATFORM ERROR: $message in $file on line $line";
+                    if ($platform == null) {
+                        Logger::Warning('Platform ' . $value . ' not found');
                         break;
                     }
 
-                    $platformCheck = 'Check' . $platformName;
-                    $result = $platformCheck::Run($platform);
+                    if ($platformCheck == null) {
+                        Logger::Warning('PlatformCheck ' . $value . ' not found');
+                        break;
+                    }
 
-                    $serverInfo = $platform->db_server_info;
-                    $this->_info['db_server_info'] = $serverInfo;
+                    $result = $platformCheck::Run($platform);
 
                     break;
             }
