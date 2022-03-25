@@ -1,0 +1,4 @@
+<FilesMatch "\.(?:inc|sql|gz|log)|(backup.php)$">
+Order allow,deny
+Deny from all
+</FilesMatch>
