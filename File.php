@@ -3,7 +3,8 @@
 class File
 {
     private bool $exist = false;
-    private string $location = '';
+    private string $relative_location = '';
+    private string $absolute_location = '';
     private string $human_size = '';
     private string $date = '';
     private int $filetime = 0;
