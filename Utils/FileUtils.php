@@ -76,4 +76,14 @@ class FileUtils
         $seconds = strtotime($dateNow) - strtotime($date);
         return $seconds / 60 /  60;
     }
+
+    public static function CreateFolderIfNotExist(string $folderPath): bool
+    {
+        if (is_dir($folderPath) == false) {
+            return mkdir($folderPath, 0755, true);
+        }
+
+        // already exist
+        return false;
+    }
 }
