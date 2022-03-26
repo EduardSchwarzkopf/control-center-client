@@ -10,10 +10,10 @@ abstract class CheckBackupBase implements CheckFilesInterface
             return false;
         }
 
-        $backupfolder = dirname(__FILE__, 3) . '/backups';
+        $backupfolder = CLIENT_ROOT . '/backups';
 
-        if (is_dir($backupfolder) == false) {
-            mkdir($backupfolder, 0755, true);
+        $created = FileUtils::CreateFolderIfNotExist($backupfolder);
+        if ($created) {
             return false;
         }
 
