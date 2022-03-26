@@ -1,6 +1,6 @@
 <?php
 
-class BackupController extends ApiController
+class BackupsController extends ApiController
 {
     public function Get(): array
     {
