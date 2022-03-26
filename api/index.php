@@ -1,5 +1,5 @@
 <?php
-define('CLIENT_ROOT', dirname(__FILE__, 2));
+define('CLIENT_ROOT', dirname(__DIR__));
 header('Content-Type: application/json; charset=utf-8');
 include(CLIENT_ROOT . '/Autoloader.php');
 
