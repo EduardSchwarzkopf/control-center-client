@@ -2,47 +2,51 @@
 
 class BackupsController extends ApiController
 {
-    public function Get(): array
+    public function Get(): Response
     {
 
         $backupFile = BackupFile::GetRecentBackupFile();
 
         if ($backupFile == null) {
-            return ['message' => 'No backup found.'];
+            return new NotFoundResponse();
         }
 
-        return $backupFile->ToArray();
+        $backupResultList = $backupFile->ToArray();
+        $response = new Response();
+        $response->Add($backupResultList);
+
+        return $response;
     }
 
-    public function Post(Request $request): array
+    public function Post(Request $request): Response
     {
         if (property_exists($request, 'platform') == false && $request->platform) {
-            return ['message' => 'platform required'];
+            return new Response(400, 'platform field is required');
         }
 
         $platformName = $request->platform;
-        $response = [];
+        $resultList = [];
 
         $platform = Platform::GetPlatformObject($platformName);
 
         if ($platform == null) {
-            return [
-                'message' => 'platform not found'
-            ];
+            return new NotFoundResponse('platform not found');
         }
 
         if (property_exists($request, 'sql_dump') && $request->sql_dump) {
 
             $sqlFile = $platform->CreateSQLDump();
-            $response['sql_dump'] = $this->CreateResponseListFromFileObject($sqlFile);
+            $resultList['sql_dump'] = $this->CreateResponseListFromFileObject($sqlFile);
         }
 
         if (property_exists($request, 'file_dump') && $request->file_dump) {
 
-            $dumpFile = $platform->CreateFilesBackup(null);
-            $response['file_dump'] = $this->CreateResponseListFromFileObject($dumpFile);
+            $dumpFile = $platform->CreateFilesBackup();
+            $resultList['file_dump'] = $this->CreateResponseListFromFileObject($dumpFile);
         }
 
+        $response = new Response();
+        $response->Add($resultList);
         return $response;
     }
 
