@@ -1,16 +1,79 @@
 <?php
 
-abstract class Request
+class Request extends Http
 {
-    private $field = [];
 
-    abstract public function Response(): string;
+    private string $method = '';
+    private ?array $postVars = null;
+    private string $endpoint = '';
+    private string $extension = '';
+    private Response $response;
 
-    public function __get($name)
+    function __construct(string $method, string $uri, $postVars = null)
     {
-        if (isset($this->field[$name]))
-            return $this->field[$name];
-        else
-            throw new Exception("$name dow not exists");
+
+        $this->method = $method;
+        $this->postVars = $postVars;
+
+
+        if (is_array($postVars)) {
+            parent::AddProperty($postVars);
+        }
+
+        $uriList = explode('/', $uri);
+
+        $this->endpoint = $uriList[3];
+
+        if (array_key_exists(4, $uriList)) {
+            $this->extension = $uriList[4];
+        }
+
+        $controller = $this->GetController();
+        $this->SetResponse($controller);
+    }
+
+    private function GetController(): ?Controller
+    {
+        $classname = $this->endpoint;
+        $controller = Controller::GetControllerByName($classname);
+        return $controller;
+    }
+
+    public function PostDataList(): array
+    {
+        return $this->postVars;
+    }
+
+    private function SetResponse(Controller $controller): void
+    {
+
+        switch ($this->method) {
+            case 'GET':
+                $response = $controller->Get();
+                break;
+
+            case 'POST':
+                $response = $controller->Post($this);
+                break;
+
+            case 'PUT':
+                $response = $controller->Put($this);
+                break;
+
+            case 'DELETE':
+                $response = $controller->Delete($this);
+                break;
+
+            default:
+                $response = new NotFoundResponse();
+                break;
+        }
+
+        $this->response = $response;
+    }
+
+    public function GetResponse(): Response
+    {
+        return $this->response;
     }
 }
