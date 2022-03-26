@@ -36,7 +36,7 @@ if ($method == 'PUT') {
 }
 
 
-$request = new Request($method, $uri, $postVars);
+$request = new APIRequest($method, $uri, $postVars);
 
 $response = $request->Response();
 
