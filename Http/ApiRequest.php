@@ -5,7 +5,7 @@ class ApiRequest extends Request
 
     private string $method = '';
     private ?array $postVars = null;
-    private ?object $controller = null;
+    private array $response = [];
 
     function __construct(string $method, string $uri, $postVars = null)
     {
@@ -13,8 +13,14 @@ class ApiRequest extends Request
         $this->method = $method;
         $this->postVars = $postVars;
 
+        foreach ($postVars as $key => $value) {
+            $this->{$key} = $value;
+        }
+
         $uriList = explode('/', $uri);
-        $this->controller = $this->GetController($uriList);
+        $controller = $this->GetController($uriList);
+
+        $this->SetResponse($controller);
     }
 
     private function GetController(array $uriList): ?Controller
@@ -29,7 +35,7 @@ class ApiRequest extends Request
         return $this->postVars;
     }
 
-    private function GetResponse(Controller $controller): array
+    private function SetResponse(Controller $controller): void
     {
 
         switch ($this->method) {
@@ -54,14 +60,14 @@ class ApiRequest extends Request
                 break;
         }
 
-        return $response;
+        $this->response = $response;
     }
 
 
     public function Response(): string
     {
 
-        $list = [];
+        $list = $this->response;
 
         return json_encode($list);
     }
