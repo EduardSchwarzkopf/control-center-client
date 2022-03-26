@@ -65,8 +65,7 @@ abstract class Platform
 
         $dumpFilePath = dirname(__DIR__) . '/backups/' . $fileName;
         $cmd = "mysqldump --user=$username  --password=$password  --host=$host  --routines --skip-triggers --lock-tables=false --default-character-set=utf8  $database --single-transaction=TRUE | gzip > $dumpFilePath";
-        $exec = shell_exec($cmd);
-        $e = shell_exec("php -v");
+        exec($cmd);
 
         $responseList = $this->CreateResponseFromFile($dumpFilePath);
 
@@ -120,7 +119,7 @@ abstract class Platform
         }
 
         $cmd = "tar -cvz --exclude=$clientPath $exlude -C $rootPath -f $backupPath $platformPath";
-        $exec = exec($cmd);
+        exec($cmd);
 
         $responseList = $this->CreateResponseFromFile($backupPath);
 
@@ -129,12 +128,11 @@ abstract class Platform
 
     private function CreateResponseFromFile(string $filePath): array
     {
-        $responseList = [];
         $backupFile = new BackupFile($filePath);
-        $backupVarList = $backupFile->ToArray();
-        unset($backupVarList['exist']);
+        $responseList = $backupFile->ToArray();
 
         $responseList['result'] = $backupFile->Exist();
+        unset($responseList['exist']);
 
         return $responseList;
     }
