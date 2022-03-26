@@ -115,7 +115,7 @@ abstract class Platform
 
         $exlude = '';
         $rootPath = dirname(__DIR__, 3);
-        $platformPath = $this->GetRelativeFilePath($this->platformRoot);
+        $platformPath = FileUtils::GetRelativeFilePath($this->platformRoot);
 
         $now = date('Y-m-d_H-i-s');
         $randomString = Utils::RandomString();
@@ -124,7 +124,7 @@ abstract class Platform
 
         $absoluteClientPath = dirname(__DIR__);
 
-        $clientPath = $this->GetRelativeFilePath($absoluteClientPath);
+        $clientPath = FileUtils::GetRelativeFilePath($absoluteClientPath);
         $backupPath = $absoluteClientPath . '/backups/' . $file;
 
         foreach ($exludePatternList as $excludePattern) {
@@ -144,11 +144,5 @@ abstract class Platform
         }
 
         return $responseList;
-    }
-
-    protected function GetRelativeFilePath($filePath)
-    {
-        $rootPath = dirname(__DIR__, 3) . '/';
-        return str_replace($rootPath, '', $filePath);
     }
 }
