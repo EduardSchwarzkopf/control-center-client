@@ -5,6 +5,7 @@ class BackupsController extends ApiController
     public function Get(): Response
     {
 
+        //TODO: Get all Backupfiles
         $backupFile = BackupFile::GetRecentBackupFile();
 
         if ($backupFile == null) {
