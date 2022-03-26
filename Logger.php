@@ -48,7 +48,7 @@ class Logger
     static private function WriteLog(string $content, string $file): bool
     {
         $dir = self::$DIR;
-        if (!is_dir($dir)) mkdir($dir);
+        FileUtils::CreateFolderIfNotExist($dir);
 
         $now = date("Y-m-d H:i");
         $line = $now . '::' . $content;
