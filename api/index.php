@@ -38,8 +38,9 @@ if ($method == 'PUT') {
 }
 
 
-$request = new APIRequest($method, $uri, $postVars);
+$request = new Request($method, $uri, $postVars);
 
-$response = $request->Response();
+$response = $request->GetResponse();
+http_response_code($response->status_code);
 
-echo $response;
+echo $response->JSON();
