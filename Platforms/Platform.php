@@ -104,7 +104,7 @@ abstract class Platform
     //
     // Doku: Reponse ggf. modularer gestalten für die Zukunft, ist aber aufgrund von Projektbudget nicht vorgehsen
     //
-    public function CreateFilesBackup(?array $exludePatternList): BackupFile
+    public function CreateFilesBackup(array $exludePatternList = []): BackupFile
     {
         $exlude = '';
         $rootPath = dirname(__DIR__, 3);
