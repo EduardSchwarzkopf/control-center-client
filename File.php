@@ -14,7 +14,8 @@ class File
     function __construct(string $location)
     {
 
-        $this->location = $location;
+        $this->absolute_location = $location;
+        $this->relative_location = str_replace(CLIENT_ROOT  . '/', '', $location);
 
         $this->exist = file_exists($location);
 
@@ -29,7 +30,7 @@ class File
 
     public function Location(): string
     {
-        return $this->location;
+        return $this->absolute_location;
     }
 
     public function Exist(): bool
