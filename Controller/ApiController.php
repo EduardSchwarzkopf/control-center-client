@@ -3,32 +3,30 @@
 
 abstract class ApiController extends Controller
 {
-    public function Get(): array
+    public function Get(): Response
     {
 
-        return $this->NotSupported();
+        return $this->MethodNotAllowed();
     }
 
-    public function Post(Request $request): array
+    public function Post(Request $request): Response
     {
 
-        return $this->NotSupported();
+        return $this->MethodNotAllowed();
     }
 
-    public function Put(Request $request): array
+    public function Put(Request $request): Response
     {
-        return $this->NotSupported();
+        return $this->MethodNotAllowed();
     }
 
-    public function Delete(Request $request): array
+    public function Delete(Request $request): Response
     {
-        return $this->NotSupported();
+        return $this->MethodNotAllowed();
     }
 
-    private function NotSupported(): array
+    protected function MethodNotAllowed(): Response
     {
-        return [
-            'message' => 'method not allowed'
-        ];
+        return new Response(405, 'Method now allowed');
     }
 }
