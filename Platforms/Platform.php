@@ -39,7 +39,7 @@ abstract class Platform
         return ClassUtils::GetClassByName($platformClassname);
     }
 
-    public function CreateSQLDump(): array
+    public function CreateSQLDump(): BackupFile
     {
         $sqlCheck = $this->CheckDatabaseConnection();
 
@@ -67,9 +67,7 @@ abstract class Platform
         $cmd = "mysqldump --user=$username  --password=$password  --host=$host  --routines --skip-triggers --lock-tables=false --default-character-set=utf8  $database --single-transaction=TRUE | gzip > $dumpFilePath";
         exec($cmd);
 
-        $responseList = $this->CreateResponseFromFile($dumpFilePath);
-
-        return $responseList;
+        return new BackupFile($dumpFilePath);
     }
 
     public function CheckDatabaseConnection(): bool
@@ -96,7 +94,7 @@ abstract class Platform
     //
     // Doku: Reponse ggf. modularer gestalten für die Zukunft, ist aber aufgrund von Projektbudget nicht vorgehsen
     //
-    public function CreateFilesBackup(?array $exludePatternList): array
+    public function CreateFilesBackup(?array $exludePatternList): BackupFile
     {
         $responseList = [];
 
@@ -121,19 +119,6 @@ abstract class Platform
         $cmd = "tar -cvz --exclude=$clientPath $exlude -C $rootPath -f $backupPath $platformPath";
         exec($cmd);
 
-        $responseList = $this->CreateResponseFromFile($backupPath);
-
-        return $responseList;
-    }
-
-    private function CreateResponseFromFile(string $filePath): array
-    {
-        $backupFile = new BackupFile($filePath);
-        $responseList = $backupFile->ToArray();
-
-        $responseList['result'] = $backupFile->Exist();
-        unset($responseList['exist']);
-
-        return $responseList;
+        return new BackupFile($backupPath);
     }
 }
