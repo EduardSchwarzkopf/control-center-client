@@ -38,7 +38,7 @@ class FileUtils
         return $recentFile;
     }
 
-    public static function GetRecentFileByPattern(string $filePattern)
+    public static function GetRecentFileByPattern(string $filePattern): ?string
     {
         $files = glob($filePattern);
 
