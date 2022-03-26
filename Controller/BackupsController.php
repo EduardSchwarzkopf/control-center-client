@@ -36,13 +36,13 @@ class BackupsController extends ApiController
         if (property_exists($request, 'sql_dump') && $request->sql_dump) {
 
             $sqlFile = $platform->CreateSQLDump();
-            $resultList['sql_dump'] = $this->CreateResponseListFromFileObject($sqlFile);
+            $resultList['sql_dump'] = $this->CreateResultListFromFileObject($sqlFile);
         }
 
         if (property_exists($request, 'file_dump') && $request->file_dump) {
 
             $dumpFile = $platform->CreateFilesBackup();
-            $resultList['file_dump'] = $this->CreateResponseListFromFileObject($dumpFile);
+            $resultList['file_dump'] = $this->CreateResultListFromFileObject($dumpFile);
         }
 
         $response = new Response();
@@ -50,7 +50,7 @@ class BackupsController extends ApiController
         return $response;
     }
 
-    private function CreateResponseListFromFileObject(File $file)
+    private function CreateResultListFromFileObject(File $file)
     {
         $responseList = [];
         $responseList = $file->ToArray();
