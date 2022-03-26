@@ -39,26 +39,20 @@ abstract class Platform
         return ClassUtils::GetClassByName($platformClassname);
     }
 
-    private function GetResponseList(): array
-    {
-        return [
-            'result' => false,
-            'bytes' => 0,
-            'path' => null,
-            'size' => 0,
-        ];
-    }
-
     public function CreateSQLDump(): array
     {
         $sqlCheck = $this->CheckDatabaseConnection();
 
-        $responseList = $this->GetResponseList();
-        $responseList['db_version'] = $this->db_server_info;
 
         if ($sqlCheck == false) {
-            return $responseList;
+            return [
+                'message' => 'No Database connection',
+                'result' => false
+            ];
         }
+
+        $responseList = [];
+        $responseList['db_version'] = $this->db_server_info;
 
         $host = $this->host;
         $database = $this->database;
@@ -71,16 +65,10 @@ abstract class Platform
 
         $dumpFilePath = dirname(__DIR__) . '/backups/' . $fileName;
         $cmd = "mysqldump --user=$username  --password=$password  --host=$host  --routines --skip-triggers --lock-tables=false --default-character-set=utf8  $database --single-transaction=TRUE | gzip > $dumpFilePath";
-        exec($cmd);
+        $exec = shell_exec($cmd);
+        $e = shell_exec("php -v");
 
-        if (file_exists($dumpFilePath)) {
-
-            $bytes = filesize($dumpFilePath);
-            $responseList['result'] = true;
-            $responseList['path'] = str_replace($this->platformRoot, '', $dumpFilePath);
-            $responseList['bytes'] = $bytes;
-            $responseList['size'] = FileUtils::HumanFileSize($bytes);
-        }
+        $responseList = $this->CreateResponseFromFile($dumpFilePath);
 
         return $responseList;
     }
@@ -111,7 +99,7 @@ abstract class Platform
     //
     public function CreateFilesBackup(?array $exludePatternList): array
     {
-        $responseList = $this->GetResponseList();
+        $responseList = [];
 
         $exlude = '';
         $rootPath = dirname(__DIR__, 3);
@@ -132,16 +120,21 @@ abstract class Platform
         }
 
         $cmd = "tar -cvz --exclude=$clientPath $exlude -C $rootPath -f $backupPath $platformPath";
-        exec($cmd);
+        $exec = exec($cmd);
 
-        if (file_exists($backupPath)) {
+        $responseList = $this->CreateResponseFromFile($backupPath);
 
-            $bytes = filesize($backupPath);
-            $responseList['result'] = true;
-            $responseList['path'] = str_replace($this->platformRoot, '', $backupPath);
-            $responseList['bytes'] = $bytes;
-            $responseList['size'] = FileUtils::HumanFileSize($bytes);
-        }
+        return $responseList;
+    }
+
+    private function CreateResponseFromFile(string $filePath): array
+    {
+        $responseList = [];
+        $backupFile = new BackupFile($filePath);
+        $backupVarList = $backupFile->ToArray();
+        unset($backupVarList['exist']);
+
+        $responseList['result'] = $backupFile->Exist();
 
         return $responseList;
     }
