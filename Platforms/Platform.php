@@ -39,6 +39,12 @@ abstract class Platform
         return ClassUtils::GetClassByName($platformClassname);
     }
 
+    protected function GetBackupFolder(): string
+    {
+        $backupPath = CLIENT_ROOT . '/backups';
+        return $backupPath;
+    }
+
     public function CreateSQLDump(): BackupFile
     {
         $sqlCheck = $this->CheckDatabaseConnection();
@@ -63,7 +69,11 @@ abstract class Platform
 
         $fileName = date('Y-m-d_H-i-s') . '_' . $database . '_' . $randomString . '.sql.gz';
 
-        $dumpFilePath = dirname(__DIR__) . '/backups/' . $fileName;
+        $backupFolder = $this->GetBackupFolder();
+        FileUtils::CreateFolderIfNotExist($backupFolder);
+
+        $dumpFilePath = $backupFolder . '/' . $fileName;
+
         $cmd = "mysqldump --user=$username  --password=$password  --host=$host  --routines --skip-triggers --lock-tables=false --default-character-set=utf8  $database --single-transaction=TRUE | gzip > $dumpFilePath";
         exec($cmd);
 
@@ -96,8 +106,6 @@ abstract class Platform
     //
     public function CreateFilesBackup(?array $exludePatternList): BackupFile
     {
-        $responseList = [];
-
         $exlude = '';
         $rootPath = dirname(__DIR__, 3);
         $platformPath = FileUtils::GetRelativeFilePath($this->platformRoot);
@@ -105,20 +113,21 @@ abstract class Platform
         $now = date('Y-m-d_H-i-s');
         $randomString = Utils::RandomString();
 
-        $file = $now . '_files_backup_' . $randomString . '.tgz';
+        $filename = $now . '_files_backup_' . $randomString . '.tgz';
 
-        $absoluteClientPath = dirname(__DIR__);
+        $clientPath = FileUtils::GetRelativeFilePath(CLIENT_ROOT);
 
-        $clientPath = FileUtils::GetRelativeFilePath($absoluteClientPath);
-        $backupPath = $absoluteClientPath . '/backups/' . $file;
+        $backupFolder = $this->GetBackupFolder();
+        $backupFilePath = $backupFolder . '/' . $filename;
+        FileUtils::CreateFolderIfNotExist($backupFolder);
 
         foreach ($exludePatternList as $excludePattern) {
             $exlude .= "--exclude=$excludePattern ";
         }
 
-        $cmd = "tar -cvz --exclude=$clientPath $exlude -C $rootPath -f $backupPath $platformPath";
+        $cmd = "tar -cvz --exclude=$clientPath $exlude -C $rootPath -f $backupFilePath $platformPath";
         exec($cmd);
 
-        return new BackupFile($backupPath);
+        return new BackupFile($backupFilePath);
     }
 }
