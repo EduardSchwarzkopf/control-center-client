@@ -1,30 +1,34 @@
 <?php
 include(dirname(__FILE__, 2) . '/Autoloader.php');
 
-$token = JWT::getBearerToken();
+$whitelist = array('127.0.0.1', "::1");
+if (in_array($_SERVER['REMOTE_ADDR'], $whitelist) == false) {
 
-if ($token == null) {
-    $requiredTokenResponseCode = 404;
-    http_response_code($requiredTokenResponseCode);
-    echo json_encode(['message' => 'Token required']);
-    return;
+    $token = JWT::getBearerToken();
+
+    if ($token == null) {
+        $requiredTokenResponseCode = 404;
+        http_response_code($requiredTokenResponseCode);
+        echo json_encode(['message' => 'Token required']);
+        return;
+    }
+
+    $jwt = new JWT($token);
+    $isValid = $jwt->isValid;
+
+    if ($isValid == false) {
+        $invalidTokenResponseCode = 401;
+        http_response_code($invalidTokenResponseCode);
+        echo json_encode(['message' => 'Invalid token']);
+        return;
+    }
 }
-
-$jwt = new JWT($token);
-$isValid = $jwt->isValid;
-
-if ($isValid == false) {
-    $invalidTokenResponseCode = 401;
-    http_response_code($invalidTokenResponseCode);
-    echo json_encode(['message' => 'Invalid token']);
-    return;
-}
-
 
 $method = $_SERVER['REQUEST_METHOD'];
 $uri = $_SERVER['REQUEST_URI'];
-$postVars = $_POST;
+$uriList = explode('/', $uri);
 
+$postVars = $_POST;
 
 if ($method == 'PUT') {
     $postVars = null;
