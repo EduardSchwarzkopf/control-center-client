@@ -16,16 +16,20 @@ class BackupsController extends ApiController
 
     public function Post(Request $request): array
     {
-
-        $platformName = $request->platform;
-
-        if ($platformName == null) {
+        if (property_exists($request, 'platform') == false && $request->platform) {
             return ['message' => 'platform required'];
         }
 
+        $platformName = $request->platform;
         $response = [];
 
         $platform = Platform::GetPlatformObject($platformName);
+
+        if ($platform == null) {
+            return [
+                'message' => 'platform not found'
+            ];
+        }
 
         if (property_exists($request, 'sql_dump') && $request->sql_dump) {
 
