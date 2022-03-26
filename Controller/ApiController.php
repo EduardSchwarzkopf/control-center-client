@@ -1,7 +1,7 @@
 <?php
 
 
-abstract class ApiController implements ControllerInterface
+abstract class ApiController extends Controller
 {
     public function Get(): array
     {
