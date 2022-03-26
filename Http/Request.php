@@ -17,11 +17,9 @@ class Request
 
     private function GetController(string $uri): ?ControllerInterface
     {
-        $controller = null;
-
-        // Controller anhand von URI bekommen
-
-        return $controller;
+        // TODO: Add logic
+        $classname = '';
+        return ClassUtils::GetClassByName($classname);
     }
 
     public function All(): array
