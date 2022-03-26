@@ -1,5 +1,7 @@
 <?php
-include(dirname(__FILE__, 2) . '/Autoloader.php');
+define('CLIENT_ROOT', dirname(__FILE__, 2));
+header('Content-Type: application/json; charset=utf-8');
+include(CLIENT_ROOT . '/Autoloader.php');
 
 $whitelist = array('127.0.0.1', "::1");
 if (in_array($_SERVER['REMOTE_ADDR'], $whitelist) == false) {
