@@ -64,6 +64,11 @@ class FileUtils
         return date("Y-m-d H:i", filemtime($filePath));
     }
 
+    public static function GetRelativeFilePath(string $currentPath, int $levelsUp = 3): string
+    {
+        $rootPath = dirname(__DIR__, $levelsUp) . '/';
+        return str_replace($rootPath, '', $currentPath);
+    }
 
     public static function GetAgeHours(string $date): string
     {
