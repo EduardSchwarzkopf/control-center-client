@@ -62,7 +62,7 @@ class BackupsController extends ApiController
             return new NotFoundResponse('platform not found');
         }
 
-        $response = new Response();
+        $response = new Response(201);
 
         if (key_exists($this->FIELD_SQL, $params)) {
 
