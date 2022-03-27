@@ -2,31 +2,74 @@
 
 class BackupFile extends File
 {
+    static public $EXTENSION_FILE = '.tgz';
+    static public $EXTENSION_DATABASE = '.sql.gz';
 
     static private function BackupFolder(): string
     {
         return dirname(__FILE__) . '/backups';
     }
 
-    static private function GetRecentBackup(string $pattern): ?self
+    static private function GetBackupPattern(int $type)
     {
-        $backupPattern = self::BackupFolder() . $pattern;
-        $recentFilePath = FileUtils::GetRecentFileByPattern($backupPattern);
+        $basePattern = self::BackupFolder() . '/*';
+        switch ($type) {
+            case 1:
+                $pattern = $basePattern . self::$EXTENSION_FILE;
+                break;
+
+            case 2:
+                $pattern = $basePattern . self::$EXTENSION_DATABASE;
+                break;
+
+            default:
+                $pattern = $basePattern;
+                break;
+        }
+
+        return $pattern;
+    }
+
+    static private function GetLatestBackup(int $type): self
+    {
+        $recentFilePath = FileUtils::GetLatestFileByPattern(self::GetBackupPattern($type));
 
         if ($recentFilePath == null) {
-            return null;
+            return new self();
         }
 
         return new self($recentFilePath);
     }
 
-    static public function GetRecentBackupFile(): ?self
+    static private function GetFileList(int $type): array
     {
-        return self::GetRecentBackup('/*.tgz');
+        $backupFileList = FileUtils::GetFileListByPattern(self::GetBackupPattern($type));
+
+        $backupList = [];
+        foreach ($backupFileList as $backupFile) {
+            array_push($backupList, new BackupFile($backupFile));
+        }
+
+        return $backupList;
     }
 
-    static public function GetRecentDatabaseBackup(): ?self
+    static public function GetFileBackupList(): array
     {
-        return self::GetRecentBackup('/*.sql.gz');
+        return self::GetFileList(1);
+    }
+
+    static public function GetDatabseBackupList(): array
+    {
+        return self::GetFileList(2);
+    }
+
+    static public function GetLatestFileBackup(): ?self
+    {
+        return self::GetLatestBackup(1);
+    }
+
+    static public function GetLatestDatabaseBackup(): ?self
+    {
+        return self::GetLatestBackup(2);
     }
 }
