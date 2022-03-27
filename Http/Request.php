@@ -25,7 +25,6 @@ class Request extends Http
         $uri = explode('?', $uri)[0];
 
         $uriList = explode('/', $uri);
-
         $this->endpoint = $uriList[3];
 
         if (array_key_exists(4, $uriList)) {
@@ -58,8 +57,7 @@ class Request extends Http
                 break;
         }
 
-        $controller = $this->GetController();
-        $this->SetResponse($controller);
+        return $params;
     }
 
     private function GetController(): ?Controller
@@ -71,7 +69,7 @@ class Request extends Http
 
     public function PostDataList(): array
     {
-        return $this->postVars;
+        return $this->params;
     }
 
     private function SetResponse(Controller $controller): void
