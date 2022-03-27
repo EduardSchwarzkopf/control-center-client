@@ -20,6 +20,10 @@ class Request extends Http
         $this->SetResponse($controller);
     }
 
+    private function HandleUri($uri): void
+    {
+        $uri = explode('?', $uri)[0];
+
         $uriList = explode('/', $uri);
 
         $this->endpoint = $uriList[3];
