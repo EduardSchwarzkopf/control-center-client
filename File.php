@@ -2,14 +2,14 @@
 
 class File
 {
-    private bool $exist = false;
-    private string $name = '';
-    private string $location = '';
-    private string $human_size = '';
-    private string $date = '';
-    private int $filetime = 0;
-    private int $bytes = 0;
-    private int $hours = 0;
+    protected bool $exist = false;
+    protected string $name = '';
+    protected string $location = '';
+    protected string $human_size = '';
+    protected string $date = '';
+    protected int $filetime = 0;
+    protected int $bytes = 0;
+    protected int $hours = 0;
 
     function __construct(string $location = '')
     {
