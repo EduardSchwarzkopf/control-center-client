@@ -30,7 +30,7 @@ class FileUtils
         return round($bytes / 1024 / 1024 / 1024, 4);
     }
 
-    public static function GetRecentFile(array $files)
+    public static function GetLatestFile(array $files)
     {
         $files = array_combine($files, array_map('filemtime', $files));
         arsort($files);
@@ -38,15 +38,20 @@ class FileUtils
         return $recentFile;
     }
 
-    public static function GetRecentFileByPattern(string $filePattern): ?string
+    public static function GetFileListByPattern($pattern): array
     {
-        $files = glob($filePattern);
+        return glob($pattern);
+    }
+
+    public static function GetLatestFileByPattern(string $filePattern): ?string
+    {
+        $files = self::GetFileListByPattern($filePattern);
 
         if (count($files) == 0) {
             return null;
         }
 
-        $file = self::GetRecentFile($files);
+        $file = self::GetLatestFile($files);
         return $file;
     }
 
