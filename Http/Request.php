@@ -4,7 +4,7 @@ class Request extends Http
 {
 
     private string $method = '';
-    private ?array $postVars = null;
+    private array $params = [];
     private string $endpoint = '';
     private string $extension = '';
     private Response $response;
