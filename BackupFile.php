@@ -40,7 +40,7 @@ class BackupFile extends File
         $recentFilePath = FileUtils::GetLatestFileByPattern(self::GetBackupPattern($type));
 
         if ($recentFilePath == null) {
-            return new self();
+            return new self('');
         }
 
         return new self($recentFilePath);
