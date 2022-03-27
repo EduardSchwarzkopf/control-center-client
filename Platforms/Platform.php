@@ -51,10 +51,7 @@ abstract class Platform
 
 
         if ($sqlCheck == false) {
-            return [
-                'message' => 'No Database connection',
-                'result' => false
-            ];
+            return new BackupFile();
         }
 
         $responseList = [];
