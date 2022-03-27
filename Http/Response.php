@@ -4,6 +4,7 @@ class Response extends Http
 {
     public ?int $status_code = null;
     public string $message = '';
+    public array $data = [];
 
     public function __construct(int $statusCode = 200, string $message = '')
     {
@@ -11,9 +12,21 @@ class Response extends Http
         $this->message = $message;
     }
 
-    public function Add(array $list): self
+    public function SetData(string $field, array $data): self
     {
-        parent::AddProperty($list);
+        $this->data[$field] = $data;
+        return $this;
+    }
+
+    public function AddData(string $field, array $data): self
+    {
+
+        if (array_key_exists($field, $this->data) && is_array($this->data[$field])) {
+            array_push($this->data[$field], $data);
+        } else {
+            $this->SetData($field, $data);
+        }
+
         return $this;
     }
 
