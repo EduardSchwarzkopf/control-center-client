@@ -26,19 +26,7 @@ if (in_array($_SERVER['REMOTE_ADDR'], $whitelist) == false) {
     }
 }
 
-$method = $_SERVER['REQUEST_METHOD'];
-$uri = $_SERVER['REQUEST_URI'];
-$uriList = explode('/', $uri);
-
-$postVars = $_POST;
-
-if ($method == 'PUT') {
-    $postVars = null;
-    parse_str(file_get_contents("php://input"), $postVars);
-}
-
-
-$request = new Request($method, $uri, $postVars);
+$request = new Request();
 
 $response = $request->GetResponse();
 http_response_code($response->status_code);
