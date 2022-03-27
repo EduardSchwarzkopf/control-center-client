@@ -51,7 +51,7 @@ abstract class Platform
 
 
         if ($sqlCheck == false) {
-            return new BackupFile();
+            return new BackupFile('');
         }
 
         $responseList = [];
@@ -64,17 +64,17 @@ abstract class Platform
 
         $randomString = Utils::RandomString();
 
-        $fileName = date('Y-m-d_H-i-s') . '_' . $database . '_' . $randomString . '.sql.gz';
+        $filename = date('Y-m-d_H-i-s') . '_' . $database . '_' . $randomString . '.sql.gz';
 
         $backupFolder = $this->GetBackupFolder();
         FileUtils::CreateFolderIfNotExist($backupFolder);
 
-        $dumpFilePath = $backupFolder . '/' . $fileName;
+        $dumpFilePath = $backupFolder . '/' . $filename;
 
         $cmd = "mysqldump --user=$username  --password=$password  --host=$host  --routines --skip-triggers --lock-tables=false --default-character-set=utf8  $database --single-transaction=TRUE | gzip > $dumpFilePath";
         exec($cmd);
 
-        return new BackupFile($dumpFilePath);
+        return new BackupFile($filename);
     }
 
     public function CheckDatabaseConnection(): bool
@@ -126,6 +126,6 @@ abstract class Platform
         $cmd = "tar -cvz --exclude=$clientPath $exlude -C $rootPath -f $backupFilePath $platformPath";
         exec($cmd);
 
-        return new BackupFile($backupFilePath);
+        return new BackupFile($filename);
     }
 }
