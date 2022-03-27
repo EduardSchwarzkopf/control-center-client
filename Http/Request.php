@@ -17,7 +17,12 @@ class Request extends Http
         $this->HandleUri($_SERVER['REQUEST_URI']);
 
         $controller = $this->GetController();
-        $this->SetResponse($controller);
+
+        if ($controller) {
+            $this->SetResponse($controller);
+        } else {
+            $this->response = new NotFoundResponse();
+        }
     }
 
     private function HandleUri($uri): void
