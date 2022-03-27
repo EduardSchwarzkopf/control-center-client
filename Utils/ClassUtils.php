@@ -12,7 +12,7 @@ class ClassUtils
 
             $object = new $classname(...$properties);
         } catch (Error $e) {
-            Logger::Error($e);
+            Logger::Warning($e->getMessage());
         }
 
         return $object;
