@@ -2,13 +2,13 @@
 
 class Logger
 {
-    static private $DIR = './logs/';
+    static private $DIR = CLIENT_ROOT . '/logs';
     static private $MAX_FILES = 7;
 
     static public function Error(Exception $error): void
     {
 
-        $file = 'error.log';
+        $logfile = 'error.log';
 
         $message = $error->getMessage();
         $line = $error->getLine();
@@ -17,35 +17,35 @@ class Logger
         $line = "ERROR: $message in $file on line $line";
 
         $logger = new self;
-        $logger->WriteLog($line, $file);
+        $logger->WriteLog($line, $logfile);
     }
 
     static public function Info($content): void
     {
 
-        $file = 'info.log';
+        $logfile = 'info.log';
         $line = 'INFO: ' . $content;
 
-        self::WriteLog($line, $file);
+        self::WriteLog($line, $logfile);
     }
 
     static public function Warning($content): void
     {
-        $file = 'warning.log';
+        $logfile = 'warning.log';
         $line = 'WARNING: ' . $content;
 
-        self::WriteLog($line, $file);
+        self::WriteLog($line, $logfile);
     }
 
     static public function Success(string $content): void
     {
-        $file = 'info.log';
+        $logfile = 'info.log';
         $line = 'SUCCESS: ' . $content;
 
-        self::WriteLog($line, $file);
+        self::WriteLog($line, $logfile);
     }
 
-    static private function WriteLog(string $content, string $file): bool
+    static private function WriteLog(string $content, string $logfile): bool
     {
         $dir = self::$DIR;
         FileUtils::CreateFolderIfNotExist($dir);
@@ -53,7 +53,7 @@ class Logger
         $now = date("Y-m-d H:i");
         $line = $now . '::' . $content;
 
-        $result = file_put_contents("$dir/$file", $line, FILE_APPEND);
+        $result = file_put_contents("$dir/$logfile", $line, FILE_APPEND);
 
         self::RotateLog();
 
