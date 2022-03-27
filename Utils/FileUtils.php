@@ -91,4 +91,11 @@ class FileUtils
         // already exist
         return false;
     }
+
+    public static function DeleteFile($path): bool
+    {
+
+        unlink($path);
+        return !file_exists($path);
+    }
 }
