@@ -2,21 +2,47 @@
 
 class BackupsController extends ApiController
 {
+    private string $FIELD_SQL = 'sql';
+    private string $FIELD_FILE = 'file';
+
     public function Get(): Response
     {
 
-        //TODO: Get all Backupfiles
-        $backupFile = BackupFile::GetRecentBackupFile();
+        $response = new Response();
+        $request = $this->request;
+        $params = $request->Params();
 
-        if ($backupFile == null) {
-            return new NotFoundResponse();
+        if (key_exists($this->FIELD_SQL, $params)) {
+            $getAll = $params[$this->FIELD_SQL] == 'all';
+            $this->SetResponseData($response, $this->FIELD_SQL, $getAll);
         }
 
-        $backupResultList = $backupFile->ToArray();
-        $response = new Response();
-        $response->Add($backupResultList);
+        if (key_exists($this->FIELD_FILE, $params)) {
+            $getAll = $params[$this->FIELD_FILE] == 'all';
+            $this->SetResponseData($response, $this->FIELD_FILE, $getAll);
+        }
 
         return $response;
+    }
+
+    private function SetResponseData(Response &$response, $type, $getAll = false): void
+    {
+        if ($getAll) {
+            $backupFileList = $type == 1 ? BackupFile::GetFileBackupList() : BackupFile::GetDatabseBackupList();
+            $fileList = [];
+            foreach ($backupFileList as $file) {
+                array_push($fileList, $file->ToArray());
+            }
+
+            $response->AddData($type, $fileList);
+        } else {
+
+            $backupFile = $type == 1 ? BackupFile::GetLatestFileBackup() : BackupFile::GetLatestDatabaseBackup();
+            $response->SetData(
+                $type,
+                $backupFile->ToArray()
+            );
+        }
     }
 
     public function Post(): Response
@@ -29,7 +55,6 @@ class BackupsController extends ApiController
         }
 
         $platformName = $params['platform'];
-        $resultList = [];
 
         $platform = Platform::GetPlatformObject($platformName);
 
@@ -37,31 +62,20 @@ class BackupsController extends ApiController
             return new NotFoundResponse('platform not found');
         }
 
-        if (key_exists('sql_dump', $params)) {
+        $response = new Response();
+
+        if (key_exists($this->FIELD_SQL, $params)) {
 
             $sqlFile = $platform->CreateSQLDump();
-            $resultList['sql_dump'] = $this->CreateResultListFromFileObject($sqlFile);
+            $response->AddData($this->FIELD_SQL, $sqlFile->ToArray());
         }
 
         if (key_exists('platform', $params)) {
 
             $dumpFile = $platform->CreateFilesBackup();
-            $resultList['file_dump'] = $this->CreateResultListFromFileObject($dumpFile);
+            $response->AddData($this->FIELD_FILE, $dumpFile->ToArray());
         }
 
-        $response = new Response();
-        $response->Add($resultList);
         return $response;
-    }
-
-    private function CreateResultListFromFileObject(File $file)
-    {
-        $responseList = [];
-        $responseList = $file->ToArray();
-
-        $responseList['result'] = $file->Exist();
-        unset($responseList['exist']);
-
-        return $responseList;
     }
 }
