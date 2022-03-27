@@ -72,4 +72,9 @@ class BackupFile extends File
     {
         return self::GetLatestBackup(2);
     }
+
+    static public function DeleteBackup($filename): bool
+    {
+        return FileUtils::DeleteFile(self::BackupFolder() . '/' . $filename);
+    }
 }
