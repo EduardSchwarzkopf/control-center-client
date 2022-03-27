@@ -14,7 +14,8 @@ class Logger
         $line = $error->getLine();
         $file = $error->getFile();
 
-        $line = "ERROR: $message in $file on line $line";
+        $class = strtoupper(get_class($error));
+        $line = "$class: $message in $file on line $line";
 
         $logger = new self;
         $logger->WriteLog($line, $logfile);
@@ -50,10 +51,11 @@ class Logger
         $dir = self::$DIR;
         FileUtils::CreateFolderIfNotExist($dir);
 
-        $now = date("Y-m-d H:i");
+        $now = date('Y-m-d H:i:s');
+        $today = date('Y-m-d');
         $line = $now . '::' . $content;
 
-        $result = file_put_contents("$dir/$logfile", $line, FILE_APPEND);
+        $result = file_put_contents("$dir/$today-$logfile", $line . "\n", FILE_APPEND);
 
         self::RotateLog();
 
