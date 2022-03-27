@@ -22,12 +22,13 @@ class BackupsController extends ApiController
     public function Post(): Response
     {
         $request = $this->request;
+        $params = $request->Params();
 
-        if (property_exists($request, 'platform') == false && $request->platform) {
+        if (key_exists('platform', $params) == false) {
             return new Response(400, 'platform field is required');
         }
 
-        $platformName = $request->platform;
+        $platformName = $params['platform'];
         $resultList = [];
 
         $platform = Platform::GetPlatformObject($platformName);
@@ -36,13 +37,13 @@ class BackupsController extends ApiController
             return new NotFoundResponse('platform not found');
         }
 
-        if (property_exists($request, 'sql_dump') && $request->sql_dump) {
+        if (key_exists('sql_dump', $params)) {
 
             $sqlFile = $platform->CreateSQLDump();
             $resultList['sql_dump'] = $this->CreateResultListFromFileObject($sqlFile);
         }
 
-        if (property_exists($request, 'file_dump') && $request->file_dump) {
+        if (key_exists('platform', $params)) {
 
             $dumpFile = $platform->CreateFilesBackup();
             $resultList['file_dump'] = $this->CreateResultListFromFileObject($dumpFile);
