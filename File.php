@@ -3,8 +3,8 @@
 class File
 {
     private bool $exist = false;
-    private string $relative_location = '';
-    private string $absolute_location = '';
+    private string $name = '';
+    private string $location = '';
     private string $human_size = '';
     private string $date = '';
     private int $filetime = 0;
@@ -19,8 +19,8 @@ class File
             return $this;
         }
 
-        $this->absolute_location = $location;
-        $this->relative_location = str_replace(CLIENT_ROOT  . '/', '', $location);
+        $this->location = $location;
+        $this->name = basename($location);
         $this->bytes = filesize($location);
         $this->human_size = FileUtils::HumanFileSize($this->bytes);
         $this->date = FileUtils::GetModificationDate($location);
@@ -28,9 +28,14 @@ class File
         $this->filetime = filemtime($location);
     }
 
+    public function Name(): string
+    {
+        return $this->name;
+    }
+
     public function Location(): string
     {
-        return $this->absolute_location;
+        return $this->location;
     }
 
     public function Exist(): bool
