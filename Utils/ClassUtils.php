@@ -11,7 +11,7 @@ class ClassUtils
         try {
 
             $object = new $classname(...$properties);
-        } catch (Exception $e) {
+        } catch (Error $e) {
             Logger::Error($e);
         }
 
