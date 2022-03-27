@@ -78,4 +78,16 @@ class BackupsController extends ApiController
 
         return $response;
     }
+
+    public function Delete(): Response
+    {
+        $request = $this->request;
+        $params = $request->Params();
+
+        if (key_exists('file', $params)) {
+            BackupFile::DeleteBackup($params['file']);
+        }
+
+        return new Response(204, 'Backup deleted');
+    }
 }
