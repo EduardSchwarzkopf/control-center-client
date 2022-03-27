@@ -70,7 +70,7 @@ class BackupsController extends ApiController
             $response->AddData($this->FIELD_SQL, $sqlFile->ToArray());
         }
 
-        if (key_exists('platform', $params)) {
+        if (key_exists($this->FIELD_FILE, $params)) {
 
             $dumpFile = $platform->CreateFilesBackup();
             $response->AddData($this->FIELD_FILE, $dumpFile->ToArray());
