@@ -9,16 +9,16 @@ class Request extends Http
     private string $extension = '';
     private Response $response;
 
-    function __construct(string $method, string $uri, $postVars = null)
+    function __construct()
     {
+        $this->method = $_SERVER['REQUEST_METHOD'];
+        $this->params = $this->GetParams();
 
-        $this->method = $method;
-        $this->postVars = $postVars;
+        $this->HandleUri($_SERVER['REQUEST_URI']);
 
-
-        if (is_array($postVars)) {
-            parent::AddProperty($postVars);
-        }
+        $controller = $this->GetController();
+        $this->SetResponse($controller);
+    }
 
         $uriList = explode('/', $uri);
 
