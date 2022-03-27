@@ -35,7 +35,7 @@ class Request extends Http
     private function GetController(): ?Controller
     {
         $classname = $this->endpoint;
-        $controller = Controller::GetControllerByName($classname);
+        $controller = Controller::GetControllerByName($classname, $this);
         return $controller;
     }
 
