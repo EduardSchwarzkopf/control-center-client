@@ -94,8 +94,10 @@ class FileUtils
 
     public static function DeleteFile($path): bool
     {
+        if (file_exists($path)) {
+            unlink($path);
+        }
 
-        unlink($path);
         return !file_exists($path);
     }
 }
