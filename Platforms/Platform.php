@@ -103,6 +103,7 @@ abstract class Platform
 
     //
     // Doku: Reponse ggf. modularer gestalten für die Zukunft, ist aber aufgrund von Projektbudget nicht vorgehsen
+    // Doku: Problem könnte ein zu langer Prozess sein - ggf. anpassen mit '...> /dev/null 2>&1 &' im exec
     //
     public function CreateFilesBackup(array $exludePatternList = []): BackupFile
     {
