@@ -19,8 +19,10 @@ class BackupsController extends ApiController
         return $response;
     }
 
-    public function Post(Request $request): Response
+    public function Post(): Response
     {
+        $request = $this->request;
+
         if (property_exists($request, 'platform') == false && $request->platform) {
             return new Response(400, 'platform field is required');
         }
