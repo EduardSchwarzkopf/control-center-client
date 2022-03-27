@@ -5,6 +5,11 @@ class BackupFile extends File
     static public $EXTENSION_FILE = '.tgz';
     static public $EXTENSION_DATABASE = '.sql.gz';
 
+    public function __construct($filename)
+    {
+        parent::__construct(self::BackupFolder() . '/' . $filename);
+    }
+
     static private function BackupFolder(): string
     {
         return dirname(__FILE__) . '/backups';
@@ -73,8 +78,10 @@ class BackupFile extends File
         return self::GetLatestBackup(2);
     }
 
-    static public function DeleteBackup($filename): bool
+    public function DeleteBackup(): self
     {
-        return FileUtils::DeleteFile(self::BackupFolder() . '/' . $filename);
+        $result = FileUtils::DeleteFile($this->Location());
+        $this->exist = $result;
+        return $this;
     }
 }
