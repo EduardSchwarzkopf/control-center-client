@@ -9,18 +9,18 @@ abstract class ApiController extends Controller
         return $this->MethodNotAllowed();
     }
 
-    public function Post(Request $request): Response
+    public function Post(): Response
     {
 
         return $this->MethodNotAllowed();
     }
 
-    public function Put(Request $request): Response
+    public function Put(): Response
     {
         return $this->MethodNotAllowed();
     }
 
-    public function Delete(Request $request): Response
+    public function Delete(): Response
     {
         return $this->MethodNotAllowed();
     }
