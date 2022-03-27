@@ -5,7 +5,7 @@ class Logger
     static private $DIR = CLIENT_ROOT . '/logs';
     static private $MAX_FILES = 7;
 
-    static public function Error(Exception $error): void
+    static public function Error(Throwable $error): void
     {
 
         $logfile = 'error.log';
