@@ -31,6 +31,32 @@ class Request extends Http
         if (array_key_exists(4, $uriList)) {
             $this->extension = $uriList[4];
         }
+    }
+
+    public function Params(): array
+    {
+        return $this->params;
+    }
+
+    private function GetParams(): array
+    {
+        switch ($this->method) {
+            case 'GET':
+                $params = $_GET;
+                break;
+
+            case 'POST':
+                $params = $_POST;
+                break;
+
+            case 'PUT':
+                parse_str(file_get_contents("php://input"), $params);
+                break;
+
+            default:
+                $params = [];
+                break;
+        }
 
         $controller = $this->GetController();
         $this->SetResponse($controller);
