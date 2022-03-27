@@ -52,7 +52,7 @@ class BackupFile extends File
 
         $backupList = [];
         foreach ($backupFileList as $backupFile) {
-            array_push($backupList, new BackupFile($backupFile));
+            array_push($backupList, new BackupFile(basename($backupFile)));
         }
 
         return $backupList;
