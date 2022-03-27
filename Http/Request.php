@@ -49,6 +49,7 @@ class Request extends Http
                 break;
 
             case 'PUT':
+            case 'DELETE':
                 parse_str(file_get_contents("php://input"), $params);
                 break;
 
