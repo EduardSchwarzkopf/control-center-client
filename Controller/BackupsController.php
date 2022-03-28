@@ -37,7 +37,7 @@ class BackupsController extends ApiController
             $response->AddData($type, $fileList);
         } else {
 
-            $backupFile = $type == 1 ? BackupFile::GetLatestFileBackup() : BackupFile::GetLatestDatabaseBackup();
+            $backupFile = $type == $this->FIELD_FILE ? BackupFile::GetLatestFileBackup() : BackupFile::GetLatestDatabaseBackup();
             $response->SetData(
                 $type,
                 $backupFile->ToArray()
