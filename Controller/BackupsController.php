@@ -2,7 +2,7 @@
 
 class BackupsController extends ApiController
 {
-    private string $FIELD_SQL = 'sql';
+    private string $FIELD_SQL = 'database';
     private string $FIELD_FILE = 'file';
 
     public function Get(): Response
