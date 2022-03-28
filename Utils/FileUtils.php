@@ -82,14 +82,14 @@ class FileUtils
         return $seconds / 60 /  60;
     }
 
-    public static function CreateFolderIfNotExist(string $folderPath): bool
+    public static function CreateFolderIfNotExist(string $folderPath): ?bool
     {
         if (is_dir($folderPath) == false) {
             return mkdir($folderPath, 0755, true);
         }
 
         // already exist
-        return false;
+        return null;
     }
 
     public static function DeleteFile($path): bool
