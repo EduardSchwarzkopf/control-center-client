@@ -1,19 +1,27 @@
 <?php
 
-abstract class Platform
+abstract class Platform extends Http
 {
 
     protected string $host = '';
-    protected string $database = '';
+    protected string $db = '';
     protected string $username = '';
     protected string $password = '';
     protected string $platformRoot = '';
     protected $platformConfig = '';
+    protected $database = '';
 
-    function __construct($configFilePath)
+    protected array $hideFields = [
+        'host', 'db', 'username', 'password', 'platformRoot', 'platformConfig'
+    ];
+
+    function __construct()
     {
         $this->platformRoot = dirname(__DIR__, 2);
+    }
 
+    protected function LaodConfig($configFilePath)
+    {
         $configPath = $this->platformRoot . $configFilePath;
         $this->platformConfig = $this->LoadPlatformConfigFile($configPath);
     }
@@ -58,7 +66,7 @@ abstract class Platform
         $responseList['db_version'] = $this->db_server_info;
 
         $host = $this->host;
-        $database = $this->database;
+        $database = $this->db;
         $username = $this->username;
         $password = $this->password;
 
@@ -82,13 +90,13 @@ abstract class Platform
         try {
 
             $result = true;
-            $conn = new mysqli($this->host, $this->username, $this->password, $this->database);
+            $conn = new mysqli($this->host, $this->username, $this->password, $this->db);
 
             if ($conn->connect_error || $conn->error) {
                 $result = false;
             }
 
-            $this->db_server_info = $conn->server_info;
+            $this->database = $conn->server_info;
 
             $conn->close();
             return $result;
