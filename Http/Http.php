@@ -2,7 +2,9 @@
 
 abstract class Http
 {
-    private $field = [];
+    private array $field = [];
+    protected array $hideFields = [];
+    private array $privateFields = ['field', 'hideFields', 'privateFields'];
 
     public function __get($name)
     {
@@ -22,8 +24,11 @@ abstract class Http
     public function ToArray(): array
     {
         $vars = get_object_vars($this);
-        unset($vars['field']);
 
+        $hideFields = array_merge($this->hideFields, $this->privateFields);
+        foreach ($hideFields as $field) {
+            unset($vars[$field]);
+        }
         return $vars;
     }
 }
