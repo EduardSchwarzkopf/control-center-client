@@ -32,10 +32,6 @@ abstract class Platform extends Http
 
         if ($platformConfig == false) {
             $platformConfig = simplexml_load_file($this->platformRoot . '/app/etc/local.xml');
-
-            if ($platformConfig == false) {
-                throw new Exception($configFilePath . ' not found');
-            }
         }
 
         return $platformConfig;
