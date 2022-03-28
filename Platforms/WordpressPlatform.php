@@ -1,7 +1,7 @@
 <?php
 
 
-class WordpressPlatform extends Platform
+class WordpressPlatform extends PhpPlatform
 {
 
     function __construct()
