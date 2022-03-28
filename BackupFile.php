@@ -35,7 +35,7 @@ class BackupFile extends File
         return $pattern;
     }
 
-    static private function GetLatestBackup(int $type): self
+    static public function GetLatestBackup(int $type): self
     {
         $recentFilePath = FileUtils::GetLatestFileByPattern(self::GetBackupPattern($type));
 
