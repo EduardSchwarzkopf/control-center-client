@@ -43,7 +43,8 @@ class BackupFile extends File
             return new self('');
         }
 
-        return new self($recentFilePath);
+        $filename = basename($recentFilePath);
+        return new self($filename);
     }
 
     static private function GetFileList(int $type): array
