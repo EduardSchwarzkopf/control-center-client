@@ -9,7 +9,8 @@ abstract class Platform extends Http
     protected string $password = '';
     protected string $platformRoot = '';
     protected $platformConfig;
-    protected $database = '';
+    protected string $database = '';
+    protected string $version = '';
 
     protected array $hideFields = [
         'host', 'db', 'username', 'password', 'platformRoot', 'platformConfig'
@@ -57,9 +58,6 @@ abstract class Platform extends Http
         if ($sqlCheck == false) {
             return new BackupFile('');
         }
-
-        $responseList = [];
-        $responseList['db_version'] = $this->db_server_info;
 
         $host = $this->host;
         $database = $this->db;
