@@ -12,7 +12,7 @@ class Response extends Http
         $this->message = $message;
     }
 
-    public function SetData(string $field, mixed $data): self
+    public function SetData(string $field, $data): self
     {
         $this->data[$field] = $data;
         return $this;
