@@ -8,7 +8,7 @@ abstract class Platform extends Http
     protected string $username = '';
     protected string $password = '';
     protected string $platformRoot = '';
-    protected $platformConfig = '';
+    protected $platformConfig;
     protected $database = '';
 
     protected array $hideFields = [
