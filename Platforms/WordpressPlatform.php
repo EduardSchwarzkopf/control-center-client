@@ -13,5 +13,6 @@ class WordpressPlatform extends PhpPlatform
         $this->database = DB_NAME;
         $this->username = DB_USER;
         $this->password = DB_PASSWORD;
+        $this->version = get_bloginfo('version');
     }
 }
