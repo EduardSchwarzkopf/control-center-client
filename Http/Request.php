@@ -42,6 +42,11 @@ class Request extends Http
         return $this->params;
     }
 
+    public function Extension(): string
+    {
+        return $this->extension;
+    }
+
     private function GetParams(): array
     {
         switch ($this->method) {
