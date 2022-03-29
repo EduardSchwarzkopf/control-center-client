@@ -87,15 +87,15 @@ class Request extends Http
                 break;
 
             case 'POST':
-                $response = $controller->Post($this);
+                $response = $controller->Post();
                 break;
 
             case 'PUT':
-                $response = $controller->Put($this);
+                $response = $controller->Put();
                 break;
 
             case 'DELETE':
-                $response = $controller->Delete($this);
+                $response = $controller->Delete();
                 break;
 
             default:
