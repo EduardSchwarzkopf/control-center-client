@@ -14,5 +14,12 @@ class WordpressPlatform extends PhpPlatform
         $this->username = DB_USER;
         $this->password = DB_PASSWORD;
         $this->version = get_bloginfo('version');
+        $theme = wp_get_theme();
+        $this->theme = [
+            'name' => $theme->get('Name'),
+            'version' => $theme->get('Version'),
+            'location' => $theme->get_template_directory(),
+        ];
+        $this->plugins = get_plugins();
     }
 }
