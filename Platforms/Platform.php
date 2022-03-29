@@ -24,18 +24,12 @@ abstract class Platform extends Http
     protected function LaodConfig($configFilePath)
     {
         $configPath = $this->platformRoot . $configFilePath;
-        $this->platformConfig = $this->LoadPlatformConfigFile($configPath);
+        $this->LoadPlatformConfigFile($configPath);
     }
 
     private function LoadPlatformConfigFile(string $configFilePath)
     {
-        $platformConfig = include_once($configFilePath);
-
-        if ($platformConfig == false) {
-            $platformConfig = simplexml_load_file($this->platformRoot . '/app/etc/local.xml');
-        }
-
-        return $platformConfig;
+        require($configFilePath);
     }
 
     static public function GetPlatformObject(string $platformName): ?self
