@@ -30,10 +30,10 @@ class Response extends Http
         return $this;
     }
 
-    public function JSON(): string
+    public function JSON(): void
     {
         $vars = $this->ToArray();
         unset($vars['status_code']);
-        return json_encode($vars);
+        echo json_encode($vars);
     }
 }
