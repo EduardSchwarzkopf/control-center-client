@@ -11,6 +11,19 @@ class BackupsController extends ApiController
         $response = new Response();
         $request = $this->request;
         $params = $request->Params();
+        $extension = $request->Extension();
+
+        if (empty($extension) == false) {
+            $backupFile = new BackupFile($extension);
+
+            if ($backupFile->Exist()) {
+                $this->DownloadBackup($backupFile);
+            } else {
+                $response = new NotFoundResponse('file not found');
+            }
+
+            return $response;
+        }
 
         if (key_exists($this->FIELD_SQL, $params)) {
             $getAll = $params[$this->FIELD_SQL] == 'all';
@@ -23,6 +36,19 @@ class BackupsController extends ApiController
         }
 
         return $response;
+    }
+
+    private function DownloadBackup(?BackupFile $backupFile): void
+    {
+        header('Content-Description: File Transfer');
+        header('Content-Type: application/octet-stream');
+        header('Content-Disposition: attachment; filename="' . $backupFile->Name() . '"');
+        header('Expires: 0');
+        header('Cache-Control: must-revalidate');
+        header('Pragma: public');
+        header('Content-Length: ' . $backupFile->Bytes());
+        flush();
+        readfile($backupFile->Location());
     }
 
     private function SetResponseData(Response &$response, $type, $getAll = false): void
