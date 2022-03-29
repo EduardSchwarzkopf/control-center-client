@@ -6,14 +6,19 @@ class Magento1Platform extends PhpPlatform
 
     function __construct()
     {
-        $configFilePath = '/app/etc/local.xml';
-        parent::__construct($configFilePath);
+        parent::__construct('/app/Mage.php');
 
-        $config = $this->platformConfig->global->resources->default_setup->connection;
+        Mage::app('default');
+        $config  = Mage::getConfig()->getResourceConnectionConfig('default_setup');
 
         $this->host = $config->host;
-        $this->database = $config->dbname;
         $this->username = $config->username;
         $this->password = $config->password;
+        $this->database = $config->dbname;
+
+        $this->version = Mage::getVersion();
+        $this->theme = [
+            'name' => Mage::getDesign()->getTheme('frontend'),
+        ];
     }
 }
