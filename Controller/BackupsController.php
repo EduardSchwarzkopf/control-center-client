@@ -19,7 +19,7 @@ class BackupsController extends ApiController
             if ($backupFile->Exist()) {
                 $this->DownloadBackup($backupFile);
             } else {
-                $response = new NotFoundResponse('file not found');
+                $response = new NotFoundResponse('File not found');
             }
 
             return $response;
