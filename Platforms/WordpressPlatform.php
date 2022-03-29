@@ -20,6 +20,11 @@ class WordpressPlatform extends PhpPlatform
             'version' => $theme->get('Version'),
             'location' => $theme->get_template_directory(),
         ];
+
+        if (!function_exists('get_plugins')) {
+            require_once ABSPATH . 'wp-admin/includes/plugin.php';
+        }
+
         $this->plugins = get_plugins();
     }
 }
