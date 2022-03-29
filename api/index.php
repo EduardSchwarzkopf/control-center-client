@@ -7,22 +7,23 @@ $whitelist = array('127.0.0.1', "::1");
 if (in_array($_SERVER['REMOTE_ADDR'], $whitelist) == false) {
 
     $token = JWT::getBearerToken();
+    $response = new Response();
 
     if ($token == null) {
-        $requiredTokenResponseCode = 404;
-        http_response_code($requiredTokenResponseCode);
-        echo json_encode(['message' => 'Token required']);
-        return;
+        $response->status_code = 404;
+        http_response_code($response->status_code);
+        $response->message =  'Token required';
+        return $response->JSON();
     }
 
     $jwt = new JWT($token);
     $isValid = $jwt->isValid;
 
     if ($isValid == false) {
-        $invalidTokenResponseCode = 401;
-        http_response_code($invalidTokenResponseCode);
-        echo json_encode(['message' => 'Invalid token']);
-        return;
+        $response->status_code = 401;
+        http_response_code($response->status_code);
+        $response->message =  'Invalid token';
+        return $response->JSON();
     }
 }
 
@@ -31,4 +32,4 @@ $request = new Request();
 $response = $request->GetResponse();
 http_response_code($response->status_code);
 
-echo $response->JSON();
+$response->JSON();
