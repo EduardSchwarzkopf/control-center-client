@@ -8,7 +8,7 @@ class Magento2Platform extends PhpPlatform
     {
 
         parent::__construct();
-        $configList = $this->platformRoot . '/app/etc/env.php';
+        $configList = include($this->platformRoot . '/app/etc/env.php');
 
         $credentials = $configList["db"]['connection']['default'];
         $this->host = $credentials["host"];
