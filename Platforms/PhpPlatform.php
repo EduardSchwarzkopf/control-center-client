@@ -4,15 +4,10 @@
 class PhpPlatform extends Platform
 {
 
-    function __construct(?string $configPath)
+    function __construct()
     {
 
         parent::__construct();
-        if ($configPath) {
-
-            $this->LaodConfig($configPath);
-        }
-
         $this->php_version = phpversion();
     }
 }

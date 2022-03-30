@@ -21,17 +21,6 @@ abstract class Platform extends Http
         $this->platformRoot = dirname(__DIR__, 2);
     }
 
-    protected function LaodConfig($configFilePath)
-    {
-        $configPath = $this->platformRoot . $configFilePath;
-        $this->LoadPlatformConfigFile($configPath);
-    }
-
-    private function LoadPlatformConfigFile(string $configFilePath)
-    {
-        require($configFilePath);
-    }
-
     static public function GetPlatformObject(string $platformName): ?self
     {
         $platformClassname = ucfirst($platformName) . 'Platform';

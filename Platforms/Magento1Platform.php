@@ -6,7 +6,9 @@ class Magento1Platform extends PhpPlatform
 
     function __construct()
     {
-        parent::__construct('/app/Mage.php');
+        parent::__construct();
+
+        include($this->platformRoot . '/app/Mage.php');
 
         Mage::app('default');
         $config  = Mage::getConfig()->getResourceConnectionConfig('default_setup');

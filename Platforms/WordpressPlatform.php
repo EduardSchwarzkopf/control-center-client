@@ -6,8 +6,8 @@ class WordpressPlatform extends PhpPlatform
 
     function __construct()
     {
-        $configFilePath = '/wp-config.php';
-        parent::__construct($configFilePath);
+        parent::__construct();
+        require($this->platformRoot . '/wp-config.php');
 
         $this->host = DB_HOST;
         $this->database = DB_NAME;

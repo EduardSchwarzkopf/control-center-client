@@ -7,10 +7,10 @@ class Magento2Platform extends PhpPlatform
     function __construct()
     {
 
-        $configPath = '/app/etc/env.php';
-        parent::__construct($configPath);
+        parent::__construct();
+        $configList = $this->platformRoot . '/app/etc/env.php';
 
-        $credentials = $this->platformConfig["db"]['connection']['default'];
+        $credentials = $configList["db"]['connection']['default'];
         $this->host = $credentials["host"];
         $this->database = $credentials["dbname"];
         $this->username = $credentials["username"];
