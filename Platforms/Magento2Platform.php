@@ -18,7 +18,7 @@ class Magento2Platform extends PhpPlatform
         $this->username = $credentials["username"];
         $this->password = $credentials["password"];
 
-        $versionOutput = exec("php $root/bin/magento --version");
+        $versionOutput = exec(PHP_BINDIR . "/php $root/bin/magento --version");
         $this->version = str_replace('Magento CLI ', '', $versionOutput);
     }
 }
