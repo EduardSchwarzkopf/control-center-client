@@ -33,13 +33,13 @@ abstract class Platform extends Http
         return $backupPath;
     }
 
-    public function CreateSQLDump(): BackupFile
+    public function CreateSQLDump(): void
     {
         $sqlCheck = $this->CheckDatabaseConnection();
 
 
         if ($sqlCheck == false) {
-            return new BackupFile('');
+            return;
         }
 
         $host = $this->host;
@@ -58,8 +58,6 @@ abstract class Platform extends Http
 
         $cmd = "mysqldump --user=$username  --password=$password  --host=$host  --routines --skip-triggers --lock-tables=false --default-character-set=utf8  $database --single-transaction=TRUE | gzip > $dumpFilePath";
         exec($cmd);
-
-        return new BackupFile($filename);
     }
 
     public function CheckDatabaseConnection(): bool
@@ -84,10 +82,10 @@ abstract class Platform extends Http
     }
 
     //
-    // Doku: Reponse ggf. modularer gestalten für die Zukunft, ist aber aufgrund von Projektbudget nicht vorgehsen
+    // Doku: Reponse ggf. modularer gestalten für die Zukunft, ist aber aufgrund von Projektbudget nicht vorgesehen
     // Doku: Problem könnte ein zu langer Prozess sein - ggf. anpassen mit '...> /dev/null 2>&1 &' im exec
     //
-    public function CreateFilesBackup(array $exludePatternList = []): BackupFile
+    public function CreateFilesBackup(array $exludePatternList = []): void
     {
         $exlude = '';
         $rootPath = dirname(__DIR__, 3);
@@ -108,9 +106,7 @@ abstract class Platform extends Http
             $exlude .= "--exclude=$excludePattern ";
         }
 
-        $cmd = "tar -cvz --exclude=$clientPath $exlude -C $rootPath -f $backupFilePath $platformPath";
+        $cmd = "tar -cvz --exclude=$clientPath $exlude -C $rootPath -f $backupFilePath $platformPath > /dev/null 2>&1 &";
         exec($cmd);
-
-        return new BackupFile($filename);
     }
 }
