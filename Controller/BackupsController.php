@@ -54,7 +54,7 @@ class BackupsController extends ApiController
     private function SetResponseData(Response &$response, $type, $getAll = false): void
     {
         if ($getAll) {
-            $backupFileList = $type == 1 ? BackupFile::GetFileBackupList() : BackupFile::GetDatabseBackupList();
+            $backupFileList = $type == $this->FIELD_FILE ? BackupFile::GetFileBackupList() : BackupFile::GetDatabseBackupList();
             $fileList = [];
             foreach ($backupFileList as $file) {
                 array_push($fileList, $file->ToArray());
