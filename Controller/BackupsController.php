@@ -88,21 +88,17 @@ class BackupsController extends ApiController
             return new NotFoundResponse('platform not found');
         }
 
-        $response = new Response(201);
-
         if (key_exists($this->FIELD_SQL, $params)) {
 
-            $sqlFile = $platform->CreateSQLDump();
-            $response->AddData($this->FIELD_SQL, $sqlFile->ToArray());
+            $platform->CreateSQLDump();
         }
 
         if (key_exists($this->FIELD_FILE, $params)) {
 
-            $dumpFile = $platform->CreateFilesBackup();
-            $response->AddData($this->FIELD_FILE, $dumpFile->ToArray());
+            $platform->CreateFilesBackup();
         }
 
-        return $response;
+        return new Response(201, 'Backup process started');
     }
 
     public function Delete(): Response
