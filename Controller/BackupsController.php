@@ -104,13 +104,13 @@ class BackupsController extends ApiController
     public function Delete(): Response
     {
         $request = $this->request;
-        $params = $request->Params();
+        $extension = $request->Extension();
 
-        if (key_exists('file', $params) == false) {
-            return new Response(400, 'file field is required');
+        if (empty($extension)) {
+            return new Response(400, 'No file name provided');
         }
 
-        $backupFile = new BackupFile($params['file']);
+        $backupFile = new BackupFile($extension);
 
         if ($backupFile->Exist() == false) {
             return new NotFoundResponse('File not found');
@@ -118,7 +118,7 @@ class BackupsController extends ApiController
 
         $response = new Response(204, 'Backup deleted');
 
-        if ($backupFile->Exist() == false) {
+        if ($backupFile->DeleteBackup() == false) {
             $response->status_code = 502;
             $response->message = 'File could not be deleted';
         }
