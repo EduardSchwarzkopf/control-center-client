@@ -16,7 +16,7 @@ class Magento1Platform extends PhpPlatform
         $this->host = $config->host;
         $this->username = $config->username;
         $this->password = $config->password;
-        $this->database = $config->dbname;
+        $this->db = $config->dbname;
 
         $this->version = Mage::getVersion();
         $this->theme = [

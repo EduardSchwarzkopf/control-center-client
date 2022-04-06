@@ -10,7 +10,7 @@ class WordpressPlatform extends PhpPlatform
         require($this->platformRoot . '/wp-config.php');
 
         $this->host = DB_HOST;
-        $this->database = DB_NAME;
+        $this->db = DB_NAME;
         $this->username = DB_USER;
         $this->password = DB_PASSWORD;
         $this->version = get_bloginfo('version');

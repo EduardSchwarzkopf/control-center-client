@@ -14,7 +14,7 @@ class Magento2Platform extends PhpPlatform
 
         $credentials = $configList["db"]['connection']['default'];
         $this->host = $credentials["host"];
-        $this->database = $credentials["dbname"];
+        $this->db = $credentials["dbname"];
         $this->username = $credentials["username"];
         $this->password = $credentials["password"];
 
