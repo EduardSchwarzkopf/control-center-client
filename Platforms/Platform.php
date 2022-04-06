@@ -56,7 +56,7 @@ abstract class Platform extends Http
 
         $dumpFilePath = $backupFolder . '/' . $filename;
 
-        $cmd = "mysqldump --user=$username  --password=$password  --host=$host  --routines --skip-triggers --lock-tables=false --default-character-set=utf8  $database --single-transaction=TRUE | gzip > $dumpFilePath";
+        $cmd = "mysqldump --user=$username  --password=$password  --host=$host  --routines --skip-triggers --lock-tables=false --default-character-set=utf8  $database --single-transaction=TRUE | gzip > $dumpFilePath | /dev/null 2>&1 &";
         exec($cmd);
     }
 
