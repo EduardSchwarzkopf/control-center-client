@@ -9,6 +9,7 @@ class SystemController extends ApiController
         $params = $resquest->Params();
 
         $response = new Response();
+        $response->SetData('client_version', CLIENT_VERSION);
 
         foreach ($params as $checkItem => $value) {
 
