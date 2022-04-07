@@ -1,5 +1,6 @@
 <?php
 define('CLIENT_ROOT', dirname(__DIR__));
+define('CLIENT_VERSION', 1);
 header('Content-Type: application/json; charset=utf-8');
 include(CLIENT_ROOT . '/Autoloader.php');
 
