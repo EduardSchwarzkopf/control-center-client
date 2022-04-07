@@ -47,8 +47,17 @@ class BackupsController extends ApiController
         header('Cache-Control: must-revalidate');
         header('Pragma: public');
         header('Content-Length: ' . $backupFile->Bytes());
-        flush();
-        readfile($backupFile->Location());
+
+        // Chunked download
+        $chunkSize = 1024 * 1024;
+        $handle = fopen($backupFile->Location(), 'rb');
+        while (!feof($handle)) {
+            $buffer = fread($handle, $chunkSize);
+            echo $buffer;
+            ob_flush();
+            flush();
+        }
+        fclose($handle);
     }
 
     private function SetResponseData(Response &$response, $type, $getAll = false): void
