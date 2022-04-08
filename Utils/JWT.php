@@ -31,7 +31,7 @@ class JWT
             return $this;
         }
 
-        $keyPublicPath = "storage/public.key";
+        $keyPublicPath = CLIENT_ROOT . "/storage/public.key";
 
         $part = explode(".", $token);
 
