@@ -1,7 +1,12 @@
+# Plesk Env setting to accept auth headers
+SetEnvIf Authorization "(.*)" HTTP_AUTHORIZATION=$1
+
 <FilesMatch "\.(?:inc|sql|gz|log|key)$">
 Order allow,deny
 Deny from all
 </FilesMatch>
 
-# Plesk Env setting to accept auth headers
-SetEnvIf Authorization "(.*)" HTTP_AUTHORIZATION=$1
+<IfModule mod_rewrite.c>
+     RewriteEngine On
+   RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+</IfModule>
