@@ -7,6 +7,6 @@ Deny from all
 </FilesMatch>
 
 <IfModule mod_rewrite.c>
-     RewriteEngine On
-   RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+    RewriteEngine On
+    RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
 </IfModule>
