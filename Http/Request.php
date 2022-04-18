@@ -78,11 +78,6 @@ class Request extends Http
         return $controller;
     }
 
-    public function PostDataList(): array
-    {
-        return $this->params;
-    }
-
     private function SetResponse(Controller $controller): void
     {
 
